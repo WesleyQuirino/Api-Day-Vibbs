@@ -5,8 +5,6 @@ exports.up = knex => knex.schema.createTable("users", table => {
     table.text("password");
     table.text("pay_key");
     table.text("pay_key_type");
-    table.text("groom_name");
-    table.text("bride_name");
     table.text("avatar");
     table.timestamp("created_at").default(knex.fn.now());
     table.timestamp("updated_at").default(knex.fn.now());
