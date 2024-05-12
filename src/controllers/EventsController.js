@@ -45,8 +45,12 @@ class EventsController{
         const user_id = request.user.id;
 
         const event = await knex("events").where({user_id}).first();
-        
-        return response.status(200).json(event);
+
+        if(event){
+            return response.status(200).json(event);
+        } else{
+            throw new AppError("Você ainda não tem nenhum evento!");
+        }
     };
 
     async update(request, response){
@@ -55,14 +59,30 @@ class EventsController{
         
         const event = await knex("events").where({user_id}).first();
 
+        if(!event){
+            throw new AppError("Você ainda não tem nenhum evento!");
+        }
+
         title ? title : event.title;
         acronym ? acronym : event.acronym;
         address ? address : event.address;
         date ? date : event.date;
         hour ? hour : event.hour;
 
-        try{
+        try {
             await knex("events").update({title, acronym, address, date, hour}).where({user_id});
+        } catch(error){
+            throw new AppError("Algo deu errado!", 500);
+        }
+
+        return response.status(200).json();
+    }
+
+    async delete(request, response){
+        const user_id = request.user.id;
+
+        try{
+            await knex("events").delete().where({user_id});
         } catch(error){
             throw new AppError("Algo deu errado!", 500);
         }
