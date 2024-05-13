@@ -7,7 +7,10 @@ const guestsController = new GuestsController();
 
 const guestsRoutes = new Router();
 
-guestsRoutes.post("/", ensureAuthenticated, guestsController.create);
-guestsRoutes.put("/:id", ensureAuthenticated, guestsController.update);
+guestsRoutes.use(ensureAuthenticated);
+
+guestsRoutes.post("/", guestsController.create);
+guestsRoutes.put("/:id", guestsController.update);
+guestsRoutes.delete("/:id", guestsController.delete);
 
 module.exports = guestsRoutes;
