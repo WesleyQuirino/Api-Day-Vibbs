@@ -8,5 +8,6 @@ const itemsController = new ItemsController();
 
 itemsRoutes.use(ensureAuthenticated);
 itemsRoutes.post("/", itemsController.create);
+itemsRoutes.put("/:id", itemsController.update);
 
 module.exports = itemsRoutes;
