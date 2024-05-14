@@ -11,6 +11,8 @@ guestsRoutes.use(ensureAuthenticated);
 
 guestsRoutes.post("/", guestsController.create);
 guestsRoutes.put("/:id", guestsController.update);
+guestsRoutes.get("/", guestsController.index);
+guestsRoutes.get("/:id", guestsController.show);
 guestsRoutes.delete("/:id", guestsController.delete);
 
 module.exports = guestsRoutes;

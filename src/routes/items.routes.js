@@ -9,5 +9,8 @@ const itemsController = new ItemsController();
 itemsRoutes.use(ensureAuthenticated);
 itemsRoutes.post("/", itemsController.create);
 itemsRoutes.put("/:id", itemsController.update);
+itemsRoutes.get("/", itemsController.index);
+itemsRoutes.get("/:id", itemsController.show);
+itemsRoutes.delete("/:id", itemsController.delete);
 
 module.exports = itemsRoutes;

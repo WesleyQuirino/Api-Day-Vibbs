@@ -68,6 +68,55 @@ class GuestsController{
         return response.status(200).json();
     }
 
+    async index(request, response){
+        const user_id = request.user.id;
+
+        const consulta = await knex("events")
+        .join("guests", "guests.event_id", "events.id")
+        .select()
+        .where({user_id})
+        .first();
+
+        if(!consulta){
+            throw new AppError("Algo deu errado!");
+        }
+
+        const {event_id} = consulta;
+
+
+        const guest = await knex("guests").select().where({event_id});
+
+        if(guest){
+            return response.status(200).json(guest);
+        } else{
+            throw new AppError("Algo deu errado!");
+        }
+    };
+
+    async show(request, response){
+        const {id} = request.params;
+        const user_id = request.user.id;
+
+        const consulta = await knex("events")
+        .join("guests", "guests.event_id", "events.id")
+        .select()
+        .where({user_id})
+        .andWhere("guests.id", id)
+        .first();
+
+        if(!consulta){
+            throw new AppError("Algo deu errado!");
+        };
+
+        const guest = await knex("guests").select().where({id});
+
+        if(guest){
+            return response.status(200).json(guest);
+        } else{
+            throw new AppError("Algo deu errado!");
+        }
+    };
+
     async delete(request, response){
         const {id} = request.params;
 

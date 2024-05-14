@@ -9,8 +9,9 @@ const eventsRoutes = new Router();
 //eventsRoutes.use(ensureAuthenticated);
 
 eventsRoutes.post("/", ensureAuthenticated, eventsController.create);
-eventsRoutes.get("/", ensureAuthenticated, eventsController.show);
 eventsRoutes.put("/", ensureAuthenticated, eventsController.update);
-eventsRoutes.delete("/", ensureAuthenticated, eventsController.delete);
+eventsRoutes.get("/", ensureAuthenticated, eventsController.index);
+eventsRoutes.get("/:id", ensureAuthenticated, eventsController.show);
+eventsRoutes.delete("/:id", ensureAuthenticated, eventsController.delete);
 
 module.exports = eventsRoutes;

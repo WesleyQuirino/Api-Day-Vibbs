@@ -2,13 +2,6 @@ const AppError = require("../utils/AppError");
 const knex = require("../database/knex");
 
 class EventsController{
-    // table.integer("user_id").references("id").inTable("users").onDelete("CASCADE");
-    // table.text("title");
-    // table.text("acronym");
-    // table.text("address");
-    // table.timestamp("date");
-    // table.timestamp("hour");
-    // table.text("background_image");
     async create(request, response){
         const { title, acronym, address, date, hour } = request.body;
         const user_id = request.user.id;
@@ -41,18 +34,6 @@ class EventsController{
         return response.status(200).json();
     };
 
-    async show(request, response){
-        const user_id = request.user.id;
-
-        const event = await knex("events").where({user_id}).first();
-
-        if(event){
-            return response.status(200).json(event);
-        } else{
-            throw new AppError("Você ainda não tem nenhum evento!");
-        }
-    };
-
     async update(request, response){
         const { title, acronym, address, date, hour } = request.body;
         const user_id = request.user.id;
@@ -76,13 +57,42 @@ class EventsController{
         }
 
         return response.status(200).json();
-    }
+    };
 
-    async delete(request, response){
+    async index(request, response){
         const user_id = request.user.id;
 
+        const event = await knex("events").where({user_id});
+
+        if(event){
+            return response.status(200).json(event);
+        } else{
+            throw new AppError("Algo deu errado!");
+        }
+    };
+
+    async show(request, response){
+        const {id} = request.params;
+        const user_id = request.user.id;
+
+        const event = await knex("events").where({user_id}).where({id}).first();
+
+        if(event){
+            return response.status(200).json(event);
+        } else{
+            throw new AppError("Algo deu errado!");
+        }
+    };
+
+    async delete(request, response){
+        const {id} = request.params;
+        const user_id = request.user.id;
+
+        if(!await knex("events").select().where({user_id}).andWhere({id}).first()){
+            throw new AppError("Algo deu errado!", 400);
+        }
         try{
-            await knex("events").delete().where({user_id});
+            await knex("events").delete().where({user_id}).andWhere({id});
         } catch(error){
             throw new AppError("Algo deu errado!", 500);
         }
