@@ -7,6 +7,7 @@ const guestsRouter = require("./guests.routes");
 const itemsRouter = require("./items.routes");
 
 const routes = Router();
+
 routes.use("/users", userRouter);
 routes.use("/sessions", sessionsRouter);
 routes.use("/events", eventsRouter);
